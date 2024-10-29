@@ -1,6 +1,6 @@
 import { isNipValid } from './nip';
 
-describe('NIP Validation', () => {
+describe('NIP', () => {
   it('should return true for a valid NIP with 10 digits', () => {
     expect(isNipValid('1234563218')).toBe(true); // 10-digit
   });
