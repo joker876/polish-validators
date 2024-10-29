@@ -1,0 +1,67 @@
+{
+  "name": "polish-validators",
+  "version": "1.0.0",
+  "description": "A set of validator functions that check common polish numbers.",
+  "files": [
+    "/dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.js",
+      "default": "./dist/esm/index.js"
+    }
+  },
+  "scripts": {
+    "test": "karma start karma.conf.js",
+    "start": "nodemon src/index.ts",
+    "clean": "rmdir /s /Q dist",
+    "build": "npm run clean && tsc -b ./tsconfig.cjs.json ./tsconfig.esm.json ./tsconfig.types.json && node ./scripts/prepare-package-json.js",
+    "build-publish": "npm run build && npm publish",
+    "preinstall": "npx only-allow pnpm"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joker876/polish-validators.git"
+  },
+  "bugs": {
+    "url": "https://github.com/joker876/polish-validators/issues"
+  },
+  "homepage": "https://github.com/joker876/polish-validators#readme",
+  "author": "joker876",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jasmine": "^4.0.3",
+    "jasmine": "^4.1.0",
+    "jasmine-core": "^5.4.0",
+    "karma": "^6.4.4",
+    "karma-chrome-launcher": "^3.2.0",
+    "karma-firefox-launcher": "^2.1.3",
+    "karma-jasmine": "^5.1.0",
+    "karma-jasmine-html-reporter": "^2.1.0",
+    "karma-typescript": "^5.5.4",
+    "nodemon": "^3.1.7",
+    "only-allow": "^1.2.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^4.6.3"
+  },
+  "keywords": [
+    "polish",
+    "pl",
+    "validators",
+    "validate",
+    "validation",
+    "walidacja",
+    "walidowanie",
+    "walidowania",
+    "polskie",
+    "nip",
+    "krs",
+    "numer",
+    "pesel",
+    "id",
+    "dowow",
+    "osobisty"
+  ]
+}
