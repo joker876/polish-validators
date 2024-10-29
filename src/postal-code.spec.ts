@@ -1,6 +1,6 @@
 import { isPostalCodeValid } from './postal-code';
 
-describe('isPostalCodeValid', () => {
+describe('Postal Code', () => {
   it('should return true for a correctly formatted postal code with a dash', () => {
     expect(isPostalCodeValid('12-345')).toBe(true); // with dash
   });

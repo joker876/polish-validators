@@ -24,8 +24,8 @@ describe('NIP', () => {
   });
 
   it('should return false for a NIP with non-numeric characters', () => {
-    expect(isNipValid('12345678AB')).toBe(false); // contains alphabetic characters
-    expect(isNipValid('12345-678C')).toBe(false); // contains alphabetic character with dashes
+    expect(isNipValid('12345678AB')).toBe(false); // contains letters
+    expect(isNipValid('12345-678C')).toBe(false); // contains letters with dashes
   });
 
   it('should return false if control number is incorrect', () => {
