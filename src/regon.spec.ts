@@ -37,4 +37,8 @@ describe('REGON', () => {
     expect(isRegonValid('12345678A')).toBe(false); // contains alphabetic character
     expect(isRegonValid('1234-5678A5')).toBe(false); // contains alphabetic character with dashes
   });
+
+  it('should return false for an empty string', () => {
+    expect(isRegonValid('')).toBe(false); // empty string
+  });
 });

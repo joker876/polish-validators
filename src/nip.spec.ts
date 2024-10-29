@@ -31,4 +31,8 @@ describe('NIP', () => {
   it('should return false if control number is incorrect', () => {
     expect(isNipValid('1234563219')).toBe(false); // wrong control number
   });
+
+  it('should return false for an empty string', () => {
+    expect(isNipValid('')).toBe(false); // empty string
+  });
 });

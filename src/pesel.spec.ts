@@ -39,4 +39,8 @@ describe('PESEL', () => {
   it('should return false for a PESEL with an invalid leap year date', () => {
     expect(isPeselValid('01222901359')).toBe(false); // PESEL with 29 Feb 2000 (leap year)
   });
+
+  it('should return false for an empty string', () => {
+    expect(isPeselValid('')).toBe(false); // empty string
+  });
 });

@@ -1,4 +1,4 @@
-const POSTAL_CODE_REGEX = /\d{2}-\d{3}/;
+const POSTAL_CODE_REGEX = /^\d{2}-?\d{3}$/;
 
 /**
  * Validates a Polish postal code format. This function checks that the code follows
