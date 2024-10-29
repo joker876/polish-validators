@@ -1,9 +1,16 @@
-import { removeWhitespace, toDigits } from './_utils';
+import { removeDashesAndWhitespace, toDigits } from './_utils';
 
 const CREDIT_CARD_REGEX = /^\d{16}$/;
 
+/**
+ * Validates a credit card number using the Luhn algorithm. The function requires a
+ * 16-digit credit card number. Any dashes or whitespace are ignored.
+ *
+ * @param {string} number - The 16-digit credit card number as a string.
+ * @returns {boolean} `true` if the credit card number is valid; `false` otherwise.
+ */
 export function isCreditCardNumberValid(number: string): boolean {
-  number = removeWhitespace(number);
+  number = removeDashesAndWhitespace(number);
   if (!CREDIT_CARD_REGEX.test(number)) {
     return false;
   }
@@ -31,6 +38,13 @@ export function isCreditCardNumberValid(number: string): boolean {
   return checkSum % 10 === 0;
 }
 
+/**
+ * Validates a credit card number using the Luhn algorithm. The function requires a
+ * 16-digit credit card number. Any dashes or whitespace are ignored.
+ *
+ * @param {string} number - The 16-digit credit card number as a string.
+ * @returns {boolean} `true` if the credit card number is invalid; `false` otherwise.
+ */
 export const isCreditCardNumberInvalid = (number: string) => !isCreditCardNumberValid(number);
 
 export const CreditCardType = {
@@ -45,6 +59,13 @@ export const CreditCardType = {
 } as const;
 export type CreditCardType = (typeof CreditCardType)[keyof typeof CreditCardType];
 
+/**
+ * Determines the type of credit card based on the first digit of the card number.
+ *
+ * @param {string} number - The credit card number as a string.
+ * @returns {CreditCardType | null} The credit card type, or `null` if the type cannot
+ * be determined.
+ */
 export function getCreditCardType(number: string): CreditCardType | null {
   switch (parseInt(number[0])) {
     case 1:

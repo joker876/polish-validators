@@ -1,6 +1,19 @@
 const PESEL_REGEX = /^\d{11}$/;
 const PESEL_WEIGHTS = [1, 3, 7, 9, 1, 3, 7, 9, 1, 3];
 
+/**
+ * Validates a PESEL (Polish national identification number) string.
+ * This function validates the control number and ensures the birthdate is also valid.
+ *
+ * **Note:** This validator isn't perfect. Some invalid numbers might still return true.
+ * For example, people born before the year 1931 might accidentally swap their birthyear
+ * and birthday, and the function will still pass. 1st, 5th, and 9th or 2nd, 6th, and
+ * 10th numbers may also be swapped while still passing. There is nothing that can really
+ * be done about that, other than validating against a database of PESEL numbers.
+ *
+ * @param {string} pesel - The 11-digit PESEL number as a string.
+ * @returns {boolean} `true` if the PESEL is valid; `false` otherwise.
+ */
 export function isPeselValid(pesel: string): boolean {
   if (!PESEL_REGEX.test(pesel) || pesel === '0'.repeat(11)) {
     return false;
@@ -38,4 +51,17 @@ export function isPeselValid(pesel: string): boolean {
   return true;
 }
 
+/**
+ * Validates a PESEL (Polish national identification number) string.
+ * This function validates the control number and ensures the birthdate is also valid.
+ *
+ * **Note:** This validator isn't perfect. Some invalid numbers might still return true.
+ * For example, people born before the year 1931 might accidentally swap their birthyear
+ * and birthday, and the function will still pass. 1st, 5th, and 9th or 2nd, 6th, and
+ * 10th numbers may also be swapped while still passing. There is nothing that can really
+ * be done about that, other than validating against a database of PESEL numbers.
+ *
+ * @param {string} pesel - The 11-digit PESEL number as a string.
+ * @returns {boolean} `true` if the PESEL is invalid; `false` otherwise.
+ */
 export const isPeselInvalid = (pesel: string) => !isPeselValid(pesel);

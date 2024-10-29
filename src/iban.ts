@@ -134,6 +134,16 @@ function _modulo(number: string, mod: number): number {
   return result;
 }
 
+/**
+ * Validates an International Bank Account Number (IBAN). The function checks for
+ * proper length, format, and passes the IBAN checksum requirements. In the case of
+ * IBANs starting with `PL` (or with no country code), the 3rd-5th digits are validated
+ * against a list of Polish banks. Any whitespace is ignored, but other characters will
+ * result in the IBAN being invalid.
+ *
+ * @param {string} iban - The IBAN number as a string, with or without spaces.
+ * @returns {boolean} `true` if the IBAN is valid; `false` otherwise.
+ */
 export function isIbanValid(iban: string): boolean {
   iban = removeWhitespace(iban);
   if (!IBAN_REGEX.test(iban)) {
@@ -160,8 +170,25 @@ export function isIbanValid(iban: string): boolean {
   return checkSum === 1;
 }
 
+/**
+ * Validates an International Bank Account Number (IBAN). The function checks for
+ * proper length, format, and passes the IBAN checksum requirements. In the case of
+ * IBANs starting with `PL` (or with no country code), the 3rd-5th digits are validated
+ * against a list of Polish banks. Any whitespace is ignored, but other characters will
+ * result in the IBAN being invalid.
+ *
+ * @param {string} iban - The IBAN number as a string, with or without spaces.
+ * @returns {boolean} `true` if the IBAN is invalid; `false` otherwise.
+ */
 export const isIbanInvalid = (iban: string) => !isIbanValid(iban);
 
+/**
+ * Extracts country-specific information from the IBAN.
+ *
+ * @param {string} iban - The IBAN number as a string.
+ * @returns {{ country: string; length: number } | null} An object containing the country name
+ * and IBAN length for the given IBAN, or `null` if not valid.
+ */
 export function getCountryIbanDataFromIban(iban: string): { country: string; length: number } | null {
   iban = toLettersAndDigits(iban).toUpperCase();
 
@@ -175,6 +202,13 @@ export function getCountryIbanDataFromIban(iban: string): { country: string; len
   return IBAN_COUNTRY_DATA[countryCode] ?? null;
 }
 
+/**
+ * Fetches the bank name based on the IBAN, specifically for Polish IBANs. If a non-Polish
+ * IBAN is supplied, it will always return `null`.
+ *
+ * @param {string} iban - The IBAN number as a string.
+ * @returns {string | null} The bank name as a string, or `null` if not available.
+ */
 export function getBankNameFromIban(iban: string): string | null {
   iban = toLettersAndDigits(iban).toUpperCase();
 

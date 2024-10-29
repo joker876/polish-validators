@@ -126,6 +126,14 @@ function _isIsbn13Valid(isbn: string): boolean {
   return (10 - (checkSum % 10)) % 10 === parseInt(isbn.charAt(-1));
 }
 
+/**
+ * Validates an ISBN (International Standard Book Number), supporting both ISBN-10 and
+ * ISBN-13 formats. Ensures that the ISBN has the correct format and checksum. Any dashes
+ * or whitespace are ignored.
+ *
+ * @param {string} isbn - The ISBN as a string.
+ * @returns {boolean} `true` if the ISBN is valid; `false` otherwise.
+ */
 export function isIsbnValid(isbn: string): boolean {
   isbn = removeDashesAndWhitespace(isbn);
   if (!ISBN_REGEX.test(isbn)) {
@@ -140,8 +148,22 @@ export function isIsbnValid(isbn: string): boolean {
   return _isIsbn13Valid(isbn);
 }
 
+/**
+ * Validates an ISBN (International Standard Book Number), supporting both ISBN-10 and
+ * ISBN-13 formats. Ensures that the ISBN has the correct format and checksum. Any dashes
+ * or whitespace are ignored.
+ *
+ * @param {string} isbn - The ISBN as a string.
+ * @returns {boolean} `true` if the ISBN is invalid; `false` otherwise.
+ */
 export const isIsbnInvalid = (isbn: string) => !isIsbnValid(isbn);
 
+/**
+ * Determines the region name associated with an ISBN based on its prefix. Region names are all in Polish.
+ *
+ * @param {string} isbn - The ISBN as a string.
+ * @returns {string | null} The region name as a string, or `null` if not recognized.
+ */
 export function getRegionNameFromIsbn(isbn: string): string | null {
   for (let i = 5; i >= 1; i++) {
     const prefix = parseInt(isbn.slice(0, i));

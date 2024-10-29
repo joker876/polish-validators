@@ -1,244 +1,237 @@
-# simple-bool
+# Polish Validators
 
-A simple set of functions that return a boolean.
+This npm package provides a series of validation functions to check the validity of common Polish identifiers, international standards, and other regulated numbers. Each function is designed to handle specific formatting rules and checksum requirements, making it suitable for validating a range of national and international numbers.
+
+**Note:** All functions that check validity also have their counterparts that check invalidity. For example, both `isPeselValid` and `isPeselInvalid` are available.
 
 ## Highlights
-* Supports TypeScript!
-* Supports Node and browser
-* Includes full JSDoc documentation
-* Very lightweight!
+
+- Supports TypeScript!
+- Includes full JSDoc documentation
+- Includes 200+ unit tests
 
 ## Installation
-### NodeJS
-```
-npm install simple-bool --save
-```
 
-### Browser
-Import the script:
-```html
-<script src="https://joker876.github.io/simple-bool/simple-bool.min.js">
 ```
-And import the functions from a global object:
-```js
-SimpleBool.isDefined();
-// or
-const { isDefined, isNumber, ... } = SimpleBool;
+npm install polish-validators --save
 ```
 
 ## Usage
 
 ```typescript
-import * from 'simple-bool';
+import * from 'polish-validators';
 // or
-import { /* function names here */ } from 'simple-bool';
+import { /* function names here */ } from 'polish-validators';
 ```
 
-### Available functions
-#### isDefined
+## PESEL
+
+### isPeselValid
+
 ```typescript
-isDefined(value: any): boolean
+isPeselValid(pesel: string): boolean
 ```
-Returns `false` if the value is `undefined` or `null`. Otherwise returns `true`.
 
-#### isNull
+Validates a PESEL (Polish national identification number) string.
+
+This function validates the control number and ensures the birthdate is also valid.
+
+**Note:** This validator isn't perfect. Some invalid numbers might still return true. For example, people born before the year 1931 might accidentally swap their birthyear and birthday and the function will still pass. 1st, 5th, and 9th or 2nd, 6th, and 10th numbers may also be swapped while still passing. There is nothing that can really be done about that, other than validating against a database of PESEL numbers.
+
+- **Parameters**:
+  - `pesel`: The 11-digit PESEL number as a string.
+- **Returns**: `true` if the PESEL is valid; `false` otherwise.
+
+## NIP
+
+### isNipValid
+
 ```typescript
-isNull(value: any): boolean
+isNipValid(nip: string): boolean
 ```
-Returns `true` if the value is `null`. Otherwise returns `false`.
 
-#### isBoolean
+Validates a NIP (Polish tax identification number) string. This function checks the format of the NIP, ensuring it has either 10 or 13 digits, is not all zeros, and meets a specific checksum requirement. Any dashes or whitespace are ignored.
+
+- **Parameters**:
+  - `nip`: The NIP number as a string, which may include dashes or whitespace.
+- **Returns**: `true` if the NIP is valid; `false` otherwise.
+
+## REGON
+
+### isRegonValid
+
 ```typescript
-isBoolean(value: any): boolean
+isRegonValid(regon: string): boolean
 ```
-Returns `true` if the value is `true` or `false`. Otherwise returns `false`.
 
-#### isAnyString
+Validates a REGON (Polish National Business Registry Number) string. The function checks for 9- or 14-digit formats and calculates a checksum according to REGON requirements. Any dashes or whitespace are ignored.
+
+- **Parameters**:
+  - `regon`: The REGON number as a string, which may include dashes or whitespace.
+- **Returns**: `true` if the REGON is valid; `false` otherwise.
+
+## Postal Code (Kod Pocztowy)
+
+### isPostalCodeValid
+
 ```typescript
-isAnyString(value: any): boolean
+isPostalCodeValid(code: string): boolean
 ```
-Returns `true` if the value is of type `string`. Otherwise returns `false`.
 
-#### isString
+Validates a Polish postal code format. This function checks that the code follows the format `XX-XXX`, where each `X` is a digit. The dash in the format is optional, but putting a dash in the wrong place will result in the code being invalid.
+
+This function does not validate whether a code actually exists. There are over 40,000 unique postal codes in Poland, and they do not follow a specific pattern.
+
+- **Parameters**:
+  - `code`: The postal code as a string.
+- **Returns**: `true` if the postal code format is valid; `false` otherwise.
+
+## ID Card Number (Seria i Numer Dowodu Osobistego)
+
+### isIdCardNumberValid
+
 ```typescript
-isString(value: any): boolean
+isIdCardNumberValid(number: string): boolean
 ```
-Returns `true` if the value is of type `string`, and is not an empty string. Otherwise returns `false`.
 
-#### isNumber
+Validates a Polish ID card number. The function verifies that the number matches a specific pattern (`AAA XXXXXX` where each `A` is any letter a-z and each `X` is any digit) and validates the control digit based on a checksum calculation. Any dashes or whitespace are ignored.
+
+- **Parameters**:
+  - `number`: The ID card number as a string.
+- **Returns**: `true` if the ID card number is valid; `false` otherwise.
+
+## Doctor Number (Numer PWK Lekarza)
+
+### isDoctorNumberValid
+
 ```typescript
-isNumber(value: any): boolean
+isDoctorNumberValid(number: string): boolean
 ```
-Returns `true` if the value is of type `number`, and is not a `NaN`. Otherwise returns `false`.
 
-#### isInt
+Validates a doctor's identifier in Poland, ensuring it has 7 digits and passes a checksum validation. Any characters other than digits will result in the identifier being invalid.
+
+- **Parameters**:
+  - `number`: The doctor's identification number as a string.
+- **Returns**: `true` if the doctor's number is valid; `false` otherwise.
+
+## Credit Card Number (Numer Karty Płatniczej)
+
+### isCreditCardNumberValid
+
 ```typescript
-isInt(value: any): boolean
+isCreditCardNumberValid(number: string): boolean
 ```
-Returns `true` if the value [is a number](#isnumber), and it **doesn't** have any decimal places. Otherwise returns `false`.
 
-#### isFloat
+Validates a credit card number using the Luhn algorithm. The function requires a 16-digit credit card number. Any dashes or whitespace are ignored.
+
+- **Parameters**:
+  - `number`: The 16-digit credit card number as a string.
+- **Returns**: `true` if the credit card number is valid; `false` otherwise.
+
+### getCreditCardType
+
 ```typescript
-isFloat(value: any): boolean
+getCreditCardType(number: string): CreditCardType | null
 ```
-Returns `true` if the value [is a number](#isnumber), and it **does** have some decimal places. Otherwise returns `false`.
 
-#### isObject
+Determines the type of credit card based on the first digit of the card number.
+
+- **Parameters**:
+  - `number`: The credit card number as a string.
+- **Returns**: The credit card type (`CreditCardType`), or `null` if the type cannot be determined.
+
+#### CreditCardType
+
+The `CreditCardType` is a custom object-based enum, defined as:
+
 ```typescript
-isObject(value: any): boolean
+export const CreditCardType = {
+  Airline: 'airline',
+  ClubCard: 'clubcard',
+  Visa: 'Visa',
+  MasterCard: 'mastercard',
+  Finances: 'finances',
+  Fuel: 'fuel',
+  Telecommunication: 'telecommunication',
+  Other: 'other',
+} as const;
+export type CreditCardType = (typeof CreditCardType)[keyof typeof CreditCardType];
 ```
-Returns `true` if the value is of type `object`, and [is defined](#isdefined). Otherwise returns `false`.
 
-#### isArray
+## IBAN
+
+### isIbanValid
+
 ```typescript
-isArray(value: any): boolean
+isIbanValid(iban: string): boolean
 ```
-Returns `true` if the value is an array. Otherwise returns `false`.
 
-#### isEmpty
+Validates an International Bank Account Number (IBAN). The function checks for proper length, format, and passes the IBAN checksum requirements. In the case of IBANs starting with `PL` (or with no country code), the 3rd-5th digits are validated against a list of Polish banks. Any whitespace is ignored, but other characters will result in the IBAN being invalid.
+
+- **Parameters**:
+  - `iban`: The IBAN number as a string, with or without spaces.
+- **Returns**: `true` if the IBAN is valid; `false` otherwise.
+
+### getCountryIbanDataFromIban
+
 ```typescript
-isEmpty(value: object | string): boolean
+getCountryIbanDataFromIban(iban: string): { country: string; length: number } | null
 ```
-Returns `true` if:
-* the value is a string, and its length is greater than 0,
-* the value is an array, and it has at least 1 item,
-* the value is an object, and it has at least 1 key.
 
-Otherwise returns `false`.
+Extracts country-specific information from the IBAN.
 
-#### isClassDeclaration
+- **Parameters**:
+  - `iban`: The IBAN number as a string.
+- **Returns**: An object containing the country name and IBAN length for the given IBAN, or `null` if not valid.
+
+### getBankNameFromIban
+
 ```typescript
-isClassDeclaration(value: any): boolean
+getBankNameFromIban(iban: string): string | null
 ```
-Returns `true` if the value is a class declaration. Otherwise returns `false`. All native classes will return `false`.
 
-Example:
+Fetches the bank name based on the IBAN, specifically for Polish IBANs. If a non-Polish IBAN is supplied, it will always return `null`. Bank names are all in Polish.
+
+- **Parameters**:
+  - `iban`: The IBAN number as a string.
+- **Returns**: The bank name as a string, or `null` if not available.
+
+## IMEI
+
+### isImeiValid
+
 ```typescript
-class Example {
-    constructor() {}
-}
-
-isClassDeclaration(Example); // -> true
-isClassDeclaration(RegExp);  // -> false
+isImeiValid(imei: string): boolean
 ```
 
-#### isInstanceOf
+Validates an IMEI (International Mobile Equipment Identity) number, using the Luhn algorithm. Checks that the IMEI is 15 digits. Any dashes, slashes, or whitespace are ignored.
+
+- **Parameters**:
+  - `imei`: The 15-digit IMEI number as a string.
+- **Returns**: `true` if the IMEI is valid; `false` otherwise.
+
+## ISBN
+
+### isIsbnValid
+
 ```typescript
-isInstanceOf(value: any, cls: Function): boolean
+isIsbnValid(isbn: string): boolean
 ```
-Returns `true` if the value is an instance of the class *cls*. Otherwise returns `false`.
 
-#### isPromise
+Validates an ISBN (International Standard Book Number), supporting both ISBN-10 and ISBN-13 formats. Ensures that the ISBN has the correct format and checksum. Any dashes or whitespace are ignored.
+
+- **Parameters**:
+  - `isbn`: The ISBN as a string.
+- **Returns**: `true` if the ISBN is valid; `false` otherwise.
+
+### getRegionNameFromIsbn
+
 ```typescript
-isPromise(value: any): boolean
+getRegionNameFromIsbn(isbn: string): string | null
 ```
-Returns `true` if the value is a Promise. Otherwise returns `false`.
 
-#### isFunction
-```typescript
-isFunction(value: any): boolean
-```
-Returns `true` if the value [is an instance of](#isinctanceof) Function. Otherwise returns `false`.
+Determines the region name associated with an ISBN based on its prefix. Region names are all in Polish.
 
-All standard functions, arrow functions, classes, constructors, etc. count towards being a Function.
-
-#### isRegExp
-```typescript
-isRegExp(value: any): boolean
-```
-Returns `true` if the value is a regular expression. Otherwise returns `false`.
-
-#### isDate
-```typescript
-isDate(value: any): boolean
-```
-Returns `true` if the value is [is an instance of](#isinctanceof) Date, or can be parsed into a valid Date. Otherwise returns `false`.
-
-All numbers return `true` when passed into `isDate`.
-
-#### hasProp
-```typescript
-hasProp(value: any, property: PropertyKey): boolean
-```
-Returns `true` if the value is an object which has a certain property *property*. Otherwise returns `false`.
-
-#### evaluate
-```typescript
-evaluate(value: any): boolean
-```
-Returns `true` if:
-* the value is equal to `true`,
-* the value is a number, and is not 0,
-* the value is an array, and it has at least 1 item,
-* the value is an object, and it has at least 1 key,
-* the value is any of those strings: (case insensitive)
-  ```typescript
-  'yes', 'y', '1', 't', 'true', 'on', 'sure'
-  ```
-
-Otherwise returns `Boolean(value)`.
-
-#### all
-```typescript
-all<T>(array: T[], fn: (value: T) => boolean = Boolean): boolean
-```
-Firstly, it flattens the given *array*.
-
-For each item in *array*, it calls *fn* and passes the item.
-
-It counts the times *fn* returns either `true` or `false`.
-
-At the end, it returns `true` only if *fn* returned `true` for all items. Otherwise returns `false`.
-
-#### most
-```typescript
-most<T>(array: T[], fn: (value: T) => boolean = Boolean): boolean
-```
-Firstly, it flattens the given *array*.
-
-For each item in *array*, it calls *fn* and passes the item.
-
-It counts the times *fn* returns either `true` or `false`.
-
-At the end, it returns `true` only if *fn* returned `true` for at least 50% of all items. Otherwise returns `false`.
-
-#### any
-```typescript
-any<T>(array: T[], fn: (value: T) => boolean = Boolean): boolean
-```
-Firstly, it flattens the given *array*.
-
-For each item in *array*, it calls *fn* and passes the item.
-
-It counts the times *fn* returns either `true` or `false`.
-
-At the end, it returns `true` if *fn* returned `true` for at least 1 item. Otherwise returns `false`.
-
-#### none
-```typescript
-none<T>(array: T[], fn: (value: T) => boolean = Boolean): boolean
-```
-Firstly, it flattens the given *array*.
-
-For each item in *array*, it calls *fn* and passes the item.
-
-It counts the times *fn* returns either `true` or `false`.
-
-At the end, it returns `true` only if *fn* returned `false` for all items. Otherwise returns `false`.
-
-#### some
-```typescript
-some<T>(array: T[], threshold: number, fn: (value: T) => boolean = Boolean): boolean
-```
-Firstly, it flattens the given *array*.
-
-For each item in *array*, it calls *fn* and passes the item.
-
-It counts the times *fn* returns either `true` or `false`.
-
-At the end, it compares these amounts to the threshold:
-* if the threshold is less than or equal to 0, it always returns `true`,
-* if the threshold is between 0 and 1 (non-inclusive), it is treated as a percetage, and it returns `true` only if *fn* returned `true` at least that many percent of all executions,
-* if the threshold is greater than or equal to 1, it returns `true` only if *fn* returned `true` at least that many times.
-
-In all other cases, it returns `false`.
+- **Parameters**:
+  - `isbn`: The ISBN as a string.
+- **Returns**: The region name as a string, or `null` if not recognized.

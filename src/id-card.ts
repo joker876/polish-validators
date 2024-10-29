@@ -41,11 +41,20 @@ const ID_CARD_CHARACTER_VALUES: Record<string, number> = {
 const ID_CARD_WEIGHTS = [7, 3, 1, 9, 7, 3, 1, 7, 3];
 const ID_CARD_REGEX = /^[A-Z]{3}\s*\d{6}$/i;
 
+/**
+ * Validates a Polish ID card number. The function verifies that the number matches
+ * a specific pattern (`AAA XXXXXX` where each `A` is any letter a-z and each `X` is any digit)
+ * and validates the control digit based on a checksum calculation. Any dashes or
+ * whitespace are ignored.
+ *
+ * @param {string} number - The ID card number as a string.
+ * @returns {boolean} `true` if the ID card number is valid; `false` otherwise.
+ */
 export function isIdCardNumberValid(number: string): boolean {
   if (!ID_CARD_REGEX.test(number)) {
     return false;
   }
-  
+
   number = toLettersAndDigits(number);
 
   let sum = 0;
@@ -59,4 +68,13 @@ export function isIdCardNumberValid(number: string): boolean {
   return sum % 10 === controlNumber;
 }
 
+/**
+ * Validates a Polish ID card number. The function verifies that the number matches
+ * a specific pattern (`AAA XXXXXX` where each `A` is any letter a-z and each `X` is any digit)
+ * and validates the control digit based on a checksum calculation. Any dashes or
+ * whitespace are ignored.
+ *
+ * @param {string} number - The ID card number as a string.
+ * @returns {boolean} `true` if the ID card number is invalid; `false` otherwise.
+ */
 export const isIdCardNumberInvalid = (number: string) => !isIdCardNumberValid(number);
