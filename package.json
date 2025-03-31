@@ -17,7 +17,7 @@
     "test": "karma start karma.conf.js",
     "start": "nodemon src/index.ts",
     "clean": "rmdir /s /Q dist",
-    "build": "npm run clean && tsc -b ./tsconfig.cjs.json ./tsconfig.esm.json ./tsconfig.types.json && node ./scripts/prepare-package-json.js",
+    "build": "npm run clean & tsc -b ./tsconfig.cjs.json ./tsconfig.esm.json ./tsconfig.types.json && node ./scripts/prepare-package-json.js",
     "build-publish": "npm run build && npm publish",
     "preinstall": "npx only-allow pnpm"
   },
