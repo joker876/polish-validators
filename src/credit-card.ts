@@ -50,7 +50,7 @@ export const isCreditCardNumberInvalid = (number: string) => !isCreditCardNumber
 export const CreditCardType = {
   Airline: 'airline',
   ClubCard: 'clubcard',
-  Visa: 'Visa',
+  Visa: 'visa',
   MasterCard: 'mastercard',
   Finances: 'finances',
   Fuel: 'fuel',

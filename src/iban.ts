@@ -90,6 +90,7 @@ const IBAN_COUNTRY_DATA: Record<string, { country: string; length: number }> = {
   VG: { country: 'Brytyjskie Wyspy Dziewicze', length: 24 },
   YE: { country: 'Jemen', length: 30 },
 };
+
 const BANK_NAMES: Record<string, string> = {
   '101': 'Narodowy Bank Polski',
   '102': 'PKO BP',
@@ -122,8 +123,8 @@ const BANK_NAMES: Record<string, string> = {
   '280': 'HSBC',
   '291': 'Aion Bank',
 };
+
 const IBAN_REGEX = /^([A-Z]{2})?(\d{2})(\d{3})(\d{8,25})$/i;
-const IBAN_COUNTRY_ONLY_REGEX = /^([A-Z]{2})$/i;
 const IBAN_BANK_DATA_REGEX = /^(?:[A-Z]{2})?\d{2}(\d{3})/i;
 
 function _modulo(number: string, mod: number): number {
@@ -146,39 +147,47 @@ function _modulo(number: string, mod: number): number {
  */
 export function isIbanValid(iban: string): boolean {
   iban = removeWhitespace(iban);
-  if (!IBAN_REGEX.test(iban)) {
+  iban = removeWhitespace(iban).toUpperCase();
+
+  // Validate the structure using the regex.
+  const match = iban.match(IBAN_REGEX);
+  if (!match) {
+    return false;
+  }
+  // Destructure the regex match, defaulting to 'PL' if the country code is missing.
+  const [, countryCode = 'PL', controlSum, bankNameNumber, rest] = match;
+
+  // Check the overall length for the given country.
+  if (
+    !IBAN_COUNTRY_DATA[countryCode] ||
+    controlSum.length + bankNameNumber.length + rest.length + 2 !== IBAN_COUNTRY_DATA[countryCode].length
+  ) {
     return false;
   }
 
-  iban = toLettersAndDigits(iban).toUpperCase();
-
-  const [, countryCode = 'PL', controlSum, bankNameNumber, rest] = iban.match(IBAN_REGEX)!;
-
-  if (!IBAN_COUNTRY_DATA[countryCode] || iban.length !== IBAN_COUNTRY_DATA[countryCode].length) {
+  // For Polish IBANs, verify that the bank code is in our known list.
+  if (countryCode === 'PL' && !BANK_NAMES[bankNameNumber]) {
     return false;
   }
 
-  if (countryCode === 'PL') {
-    if (!BANK_NAMES[bankNameNumber]) {
-      return false;
-    }
-  }
-
-  iban = rest + (countryCode.charCodeAt(0) - 55) + (countryCode.charCodeAt(1) - 55) + controlSum;
-  const checkSum = _modulo(iban, 97);
+  // Rearrange the IBAN: move the first 4 characters (country code and control sum)
+  // to the end. The BBAN (bankNameNumber + rest) comes first.
+  const rearranged =
+    bankNameNumber +
+    rest +
+    (countryCode.charCodeAt(0) - 55).toString() +
+    (countryCode.charCodeAt(1) - 55).toString() +
+    controlSum;
+  const checkSum = _modulo(rearranged, 97);
 
   return checkSum === 1;
 }
 
 /**
- * Validates an International Bank Account Number (IBAN). The function checks for
- * proper length, format, and passes the IBAN checksum requirements. In the case of
- * IBANs starting with `PL` (or with no country code), the 3rd-5th digits are validated
- * against a list of Polish banks. Any whitespace is ignored, but other characters will
- * result in the IBAN being invalid.
+ * Returns true if the IBAN is invalid; false otherwise.
  *
- * @param {string} iban - The IBAN number as a string, with or without spaces.
- * @returns {boolean} `true` if the IBAN is invalid; `false` otherwise.
+ * @param {string} iban - The IBAN number as a string.
+ * @returns {boolean}
  */
 export const isIbanInvalid = (iban: string) => !isIbanValid(iban);
 
@@ -191,35 +200,29 @@ export const isIbanInvalid = (iban: string) => !isIbanValid(iban);
  */
 export function getCountryIbanDataFromIban(iban: string): { country: string; length: number } | null {
   iban = toLettersAndDigits(iban).toUpperCase();
-
-  const result = iban.match(IBAN_COUNTRY_ONLY_REGEX);
-  if (!result) {
+  if (iban.length < 2) {
     return null;
   }
-
-  const [, countryCode] = result;
-
+  const countryCode = iban.slice(0, 2);
   return IBAN_COUNTRY_DATA[countryCode] ?? null;
 }
 
 /**
- * Fetches the bank name based on the IBAN, specifically for Polish IBANs. If a non-Polish
- * IBAN is supplied, it will always return `null`.
+ * Fetches the bank name based on the IBAN, specifically for Polish IBANs.
+ * If a non-Polish IBAN is supplied, it will always return `null`.
  *
  * @param {string} iban - The IBAN number as a string.
  * @returns {string | null} The bank name as a string, or `null` if not available.
  */
 export function getBankNameFromIban(iban: string): string | null {
   iban = toLettersAndDigits(iban).toUpperCase();
-
-  const result = iban.match(IBAN_BANK_DATA_REGEX);
-  if (!result) {
+  if (!iban.startsWith('PL')) {
     return null;
   }
-  const [, countryCode = 'PL', bankNameNumber] = result;
-
-  if (countryCode !== 'PL') {
+  const match = iban.match(IBAN_BANK_DATA_REGEX);
+  if (!match) {
     return null;
   }
-  return BANK_NAMES[bankNameNumber] ?? null;
+  const bankCode = match[1];
+  return BANK_NAMES[bankCode] ?? null;
 }

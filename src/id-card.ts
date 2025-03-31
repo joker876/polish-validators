@@ -1,4 +1,4 @@
-import { toLettersAndDigits } from './_utils';
+import { removeWhitespace } from './_utils';
 
 const ID_CARD_CHARACTER_VALUES: Record<string, number> = {
   '0': 0,
@@ -55,7 +55,7 @@ export function isIdCardNumberValid(number: string): boolean {
     return false;
   }
 
-  number = toLettersAndDigits(number);
+  number = removeWhitespace(number).toUpperCase();
 
   let sum = 0;
   for (let i = 0; i < ID_CARD_WEIGHTS.length; i++) {
