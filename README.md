@@ -8,7 +8,7 @@ This npm package provides a series of validation functions to check the validity
 
 - Supports TypeScript!
 - Includes full JSDoc documentation
-- Includes 200+ unit tests
+- Includes 100+ unit tests
 
 ## Installation
 
@@ -42,6 +42,30 @@ This function validates the control number and ensures the birthdate is also val
   - `pesel`: The 11-digit PESEL number as a string.
 - **Returns**: `true` if the PESEL is valid; `false` otherwise.
 
+### getBirthdateFromPesel
+
+```typescript
+getBirthdateFromPesel(pesel: string): Date
+```
+
+Extracts the birthdate from a valid PESEL number.
+
+- **Parameters**:
+  - `pesel`: The 11-digit PESEL number as a string.
+- **Returns**: A `Date` object containing the year, month, and day extracted from the PESEL. Throws an error if an invalid PESEL is given.
+
+### extractSexFromPesel
+
+```typescript
+extractSexFromPesel(pesel: string): PeselSex
+```
+
+Extracts the sex from a valid PESEL number.
+
+- **Parameters**:
+  - `pesel`: The 11-digit PESEL number as a string.
+- **Returns**: Either `"male"` or `"female"`. Throws an error if an invalid PESEL is given.
+
 ## NIP
 
 ### isNipValid
@@ -55,6 +79,19 @@ Validates a NIP (Polish tax identification number) string. This function checks 
 - **Parameters**:
   - `nip`: The NIP number as a string, which may include dashes or whitespace.
 - **Returns**: `true` if the NIP is valid; `false` otherwise.
+
+### formatNip
+
+```typescript
+formatNip(nip: string, format: NipFormat = NipFormat.Format3223): string
+```
+
+Formats a valid NIP into the specified format.
+
+- **Parameters**:
+  - `nip`: The NIP as a string, which may include dashes or whitespace.
+  - `format`: The format to be applied. Can be either `"3-2-2-3"` or `"3-3-2-2"`. Optional, defaults to `"3-2-2-3"`.
+- **Returns**: the NIP formatted according to the given format, or `"Nieprawidłowy NIP"` if the NIP is invalid.
 
 ## REGON
 
