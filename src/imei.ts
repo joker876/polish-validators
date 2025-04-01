@@ -1,4 +1,4 @@
-import { removeDashesSlashesAndWhitespace, toDigits } from './_utils';
+import { removeDashesSlashesAndWhitespace } from './_utils';
 
 const IMEI_REGEX = /^\d{15}$/;
 
@@ -14,8 +14,6 @@ export function isImeiValid(imei: string): boolean {
   if (!IMEI_REGEX.test(imei)) {
     return false;
   }
-
-  imei = toDigits(imei);
 
   let checkSum = 0;
   let digits = '';

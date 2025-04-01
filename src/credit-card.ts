@@ -1,4 +1,4 @@
-import { removeDashesAndWhitespace, toDigits } from './_utils';
+import { removeDashesAndWhitespace } from './_utils';
 
 const CREDIT_CARD_REGEX = /^\d{16}$/;
 
@@ -14,8 +14,6 @@ export function isCreditCardNumberValid(number: string): boolean {
   if (!CREDIT_CARD_REGEX.test(number)) {
     return false;
   }
-
-  number = toDigits(number);
 
   let checkSum = 0;
   let digits = '';

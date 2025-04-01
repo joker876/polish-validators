@@ -1,4 +1,4 @@
-import { removeDashesAndWhitespace, toDigits, toLettersAndDigits } from './_utils';
+import { removeDashesAndWhitespace } from './_utils';
 
 const ISBN_REGION_CODES: Record<string, string> = {
   '0': 'Angielski (Wielka Brytania, USA, Australia, Nowa Zelandia, Kanada)',
@@ -135,12 +135,10 @@ function _isIsbn13Valid(isbn: string): boolean {
  * @returns {boolean} `true` if the ISBN is valid; `false` otherwise.
  */
 export function isIsbnValid(isbn: string): boolean {
-  isbn = removeDashesAndWhitespace(isbn);
+  isbn = removeDashesAndWhitespace(isbn).toUpperCase();
   if (!ISBN_REGEX.test(isbn)) {
     return false;
   }
-
-  isbn = toLettersAndDigits(isbn).toUpperCase();
 
   if (isbn.length === 10) {
     return _isIsbn10Valid(isbn);
@@ -166,10 +164,9 @@ export const isIsbnInvalid = (isbn: string) => !isIsbnValid(isbn);
  */
 export function getRegionNameFromIsbn(isbn: string): string | null {
   if (isIsbnInvalid(isbn)) return null;
-
-  isbn = toDigits(isbn);
-
-  const start = toDigits(isbn).length === 10 ? 0 : 3;
+  
+  isbn = removeDashesAndWhitespace(isbn).toUpperCase();
+  const start = isbn.length === 10 ? 0 : 3;
 
   for (let i = 5; i >= 1; i--) {
     const prefix = isbn.slice(start, start + i);

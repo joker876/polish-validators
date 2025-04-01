@@ -1,4 +1,4 @@
-import { removeWhitespace, toLettersAndDigits } from './_utils';
+import { removeWhitespace } from './_utils';
 
 const IBAN_COUNTRY_DATA: Record<string, { country: string; length: number }> = {
   AL: { country: 'Albania', length: 28 },
@@ -124,6 +124,40 @@ const BANK_NAMES: Record<string, string> = {
   '291': 'Aion Bank',
 };
 
+export const BankName = {
+  NBP: 'Narodowy Bank Polski',
+  PKOBP: 'PKO BP',
+  BankHandlowy: 'Bank Handlowy (Citi Handlowy)',
+  ING: 'ING Bank Śląski',
+  SantanderBankPolska: 'Santander Bank Polska',
+  BGK: 'BGK',
+  mBank: 'mBank',
+  Millenium: 'Bank Millennium',
+  PekaoSA: 'Pekao SA',
+  BankPocztowy: 'Bank Pocztowy',
+  BOSBank: 'BOŚ Bank',
+  MercedezBenzBank: 'Mercedes-Benz Bank Polska',
+  SGB: 'SGB - Bank',
+  RBSBank: 'RBS Bank (Polska)',
+  PlusBank: 'Plus Bank',
+  SocieteGenerale: 'Societe Generale',
+  NestBank: 'Nest Bank',
+  BankPolskiejSpoldzielczosci: 'Bank Polskiej Spółdzielczości',
+  CreditAgricole: 'Credit Agricole Bank Polska',
+  BNPParibas: 'BNP Paribas',
+  StantanderConsumerBank: 'Santander Consumer Bank',
+  ToyotaBank: 'Toyota Bank',
+  DNB: 'DNB Bank Polska',
+  GetinNobleBank: 'Getin Noble Bank',
+  AliorBank: 'Alior Bank',
+  FCE: 'FCE Bank Polska',
+  Inbank: 'Inbank',
+  VolksvagenBank: 'Volkswagen Bank',
+  HSBC: 'HSBC',
+  AionBank: 'Aion Bank',
+} as const;
+export type BankName = (typeof BankName)[keyof typeof BankName];
+
 const IBAN_REGEX = /^([A-Z]{2})?(\d{2})(\d{3})(\d{8,25})$/i;
 const IBAN_BANK_DATA_REGEX = /^(?:[A-Z]{2})?\d{2}(\d{3})/i;
 
@@ -146,7 +180,6 @@ function _modulo(number: string, mod: number): number {
  * @returns {boolean} `true` if the IBAN is valid; `false` otherwise.
  */
 export function isIbanValid(iban: string): boolean {
-  iban = removeWhitespace(iban);
   iban = removeWhitespace(iban).toUpperCase();
 
   // Validate the structure using the regex.
@@ -199,7 +232,7 @@ export const isIbanInvalid = (iban: string) => !isIbanValid(iban);
  * and IBAN length for the given IBAN, or `null` if not valid.
  */
 export function getCountryIbanDataFromIban(iban: string): { country: string; length: number } | null {
-  iban = toLettersAndDigits(iban).toUpperCase();
+  iban = removeWhitespace(iban).toUpperCase();
   if (iban.length < 2) {
     return null;
   }
@@ -215,7 +248,7 @@ export function getCountryIbanDataFromIban(iban: string): { country: string; len
  * @returns {string | null} The bank name as a string, or `null` if not available.
  */
 export function getBankNameFromIban(iban: string): string | null {
-  iban = toLettersAndDigits(iban).toUpperCase();
+  iban = removeWhitespace(iban).toUpperCase();
   if (!iban.startsWith('PL')) {
     return null;
   }

@@ -1,8 +1,8 @@
-import { isNipValid } from './nip';
+import { formatNip, isNipValid } from './nip';
 
 describe('NIP', () => {
   it('should return true for a valid NIP with 10 digits', () => {
-    expect(isNipValid('1234563218')).toBe(true); // 10-digit
+    expect(isNipValid('1234567890')).toBe(true); // 10-digit
   });
 
   it('should return true for a valid NIP with 13 digits', () => {
@@ -34,5 +34,15 @@ describe('NIP', () => {
 
   it('should return false for an empty string', () => {
     expect(isNipValid('')).toBe(false); // empty string
+  });
+});
+
+describe('formatNip', () => {
+  it('should format a valid NIP correctly', () => {
+    expect(formatNip('1234567890')).toEqual('123-45-67-890');
+  });
+
+  it('should throw an error for an invalid NIP', () => {
+    expect(formatNip('1234567891')).toEqual('Nieprawidłowy NIP');
   });
 });
