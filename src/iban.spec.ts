@@ -2,9 +2,10 @@ import { getBankNameFromIban, getCountryIbanDataFromIban, isIbanValid } from './
 
 describe('IBAN Validation and Utility Functions', () => {
   describe('isIbanValid', () => {
-    it('should return true for a valid IBAN with correct checksum and formatting (Austrian IBAN)', () => {
+    it('should return true for a valid IBAN with correct checksum and formatting', () => {
       // AT611904300234573201 is a known valid Austrian IBAN.
       expect(isIbanValid('PL47 1140 2004 0000 3312 1564 8766')).toBe(true);
+      expect(isIbanValid('HU23 1140 2004 0000 3102 7648 0004')).toBe(true);
     });
 
     it('should return true for a valid IBAN even with extra whitespace', () => {
@@ -18,7 +19,8 @@ describe('IBAN Validation and Utility Functions', () => {
     });
 
     it('should return false for a Polish IBAN with an invalid bank code', () => {
-      expect(isIbanValid('PL61109910140000071219812874')).toBe(false);
+      // an IBAN with invalid bank name, but otherwise valid
+      expect(isIbanValid('PL61 9999 1014 0000 0712 1981 8140')).toBe(false);
     });
 
     it('should return false for an IBAN with invalid characters (non-whitespace)', () => {
@@ -58,6 +60,11 @@ describe('IBAN Validation and Utility Functions', () => {
       // PL IBAN with bank code "114" should correspond to mBank according to BANK_NAMES.
       // Example: "PL27114020040000300201355387" is a valid Polish IBAN.
       expect(getBankNameFromIban('PL47 1140 2004 0000 3312 1564 8766')).toBe('mBank');
+    });
+
+    it('should return null for a Polish IBAN with invalid bank number', () => {
+      // For non-Polish IBANs, the function always returns null.
+      expect(getBankNameFromIban('PL61 9999 1014 0000 0712 1981 8140')).toBeNull();
     });
 
     it('should return null for a non-Polish IBAN', () => {
