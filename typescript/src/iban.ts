@@ -103,6 +103,7 @@ const BANK_NAMES: Record<string, string> = {
   '124': 'Pekao SA',
   '132': 'Bank Pocztowy',
   '154': 'BOŚ Bank',
+  '156': 'Velo Bank',
   '158': 'Mercedes-Benz Bank Polska',
   '161': 'SGB - Bank',
   '167': 'RBS Bank (Polska)',

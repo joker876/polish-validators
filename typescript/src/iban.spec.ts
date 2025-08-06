@@ -5,6 +5,7 @@ describe('IBAN Validation and Utility Functions', () => {
     it('should return true for a valid IBAN with correct checksum and formatting', () => {
       // AT611904300234573201 is a known valid Austrian IBAN.
       expect(isIbanValid('PL47 1140 2004 0000 3312 1564 8766')).toBe(true);
+      expect(isIbanValid('03 1560 0013 2026 2754 1000 0001')).toBe(true);
       expect(isIbanValid('HU23 1140 2004 0000 3102 7648 0004')).toBe(true);
     });
 
