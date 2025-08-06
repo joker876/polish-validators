@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "tslib": "^2.3.0",
-    "polish-validators": "^1.0.1"
+    "polish-validators": "^1.1.4"
   },
   "sideEffects": false
 }
