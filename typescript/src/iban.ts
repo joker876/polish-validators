@@ -102,6 +102,7 @@ const BANK_NAMES: Record<string, string> = {
   '116': 'Bank Millennium',
   '124': 'Pekao SA',
   '132': 'Bank Pocztowy',
+  '137': 'DNB Bank Polska Spółka Akcyjna',
   '154': 'BOŚ Bank',
   '156': 'Velo Bank',
   '158': 'Mercedes-Benz Bank Polska',
@@ -123,6 +124,9 @@ const BANK_NAMES: Record<string, string> = {
   '277': 'Volkswagen Bank',
   '280': 'HSBC',
   '291': 'Aion Bank',
+  '812': 'Bank Spółdzielczy w Porąbce',
+  '845': 'Orzesko-Knurowski Bank Spółdzielczy',
+  '914': 'Bank Spółdzielczy w Przysusze',
 };
 
 export const BankName = {
