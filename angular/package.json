@@ -4,7 +4,7 @@
   "scripts": {
     "version": "cd projects/ngx-polish-validators && npm version",
     "build": "ng build --project=ngx-polish-validators",
-    "publish": "pnpm run build && cd dist/ngx-polish-validators && npm publish --access=public"
+    "publish-publish": "pnpm run build && cd dist/ngx-polish-validators && npm publish --access=public"
   },
   "private": true,
   "dependencies": {

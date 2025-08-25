@@ -1,6 +1,8 @@
 {
   "scripts": {
     "version:ts": "cd typescript & npm version",
-    "version:ng": "cd angular & npm run version"
+    "version:ng": "cd angular & npm run version",
+    "build-publish:ts": "cd typescript & npm run build-publish",
+    "build-publish:ng": "cd angular & npm run version"
   }
 }
