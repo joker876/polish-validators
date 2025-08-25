@@ -1,13 +1,13 @@
 {
   "name": "ngx-polish-validators",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "peerDependencies": {
     "@angular/common": "^18.2.0",
     "@angular/core": "^18.2.0"
   },
   "dependencies": {
     "tslib": "^2.3.0",
-    "polish-validators": "^1.1.4"
+    "polish-validators": "^1.1.5"
   },
   "sideEffects": false
 }

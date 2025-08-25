@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "version:ts": "cd typescript & npm version",
+    "version:ng": "cd angular & npm run version"
+  }
+}
