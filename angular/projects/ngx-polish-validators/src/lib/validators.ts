@@ -1,7 +1,7 @@
 import { ValidatorFn } from '@angular/forms';
 import {
   BankName,
-  getBankNameFromIban,
+  getFullBankNameFromIban,
   isCreditCardNumberValid,
   isDoctorNumberValid,
   isIbanValid,
@@ -45,7 +45,7 @@ export class PolishValidators {
       }
 
       if (options.allowedBankNames) {
-        const bankName = getBankNameFromIban(v);
+        const bankName = getFullBankNameFromIban(v);
         const [, bankNameCode] = v.match(IBAN_BANK_DATA_REGEX);
         if (bankName && !options.allowedBankNames.includes(bankName as BankName)) {
           return { ibanBankNameNotAllowed: { bankNameCode, bankName } };

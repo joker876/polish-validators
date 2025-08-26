@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { getBankNameFromIban } from 'polish-validators';
+import { getBankNameFromIban, getFullBankNameFromIban } from 'polish-validators';
 
 /**
  * Pipe that fetches the bank name based on the IBAN using the
@@ -23,5 +23,30 @@ export class IbanBankNamePipe implements PipeTransform {
    */
   transform(iban: string): string | null {
     return getBankNameFromIban(iban);
+  }
+}
+
+/**
+ * Pipe that fetches the full bank name based on the IBAN using the
+ * `getFullBankNameFromIban` function from the polish-validators library.
+ * This function returns a full bank name only for Polish IBANs.
+ *
+ * @example
+ * {{ "PL61109010140000071219812874" | ibanBankName }}
+ * // returns
+ * "Powszechna Kasa Oszczędności Bank Polski Spółka Akcyjna"
+ */
+@Pipe({
+  name: 'ibanFullBankName',
+})
+export class IbanFullBankNamePipe implements PipeTransform {
+  /**
+   * Transforms the provided IBAN by fetching the corresponding bank name.
+   *
+   * @param {string} iban - The IBAN number as a string.
+   * @returns {string | null} The bank name as a string, or `null` if not available.
+   */
+  transform(iban: string): string | null {
+    return getFullBankNameFromIban(iban);
   }
 }
