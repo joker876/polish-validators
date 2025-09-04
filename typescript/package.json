@@ -6,6 +6,7 @@
     "/dist"
   ],
   "sideEffects": false,
+  "packageManager": "pnpm@10.15.1",
   "exports": {
     ".": {
       "types": "./dist/types/index.d.ts",
