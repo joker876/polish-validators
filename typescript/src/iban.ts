@@ -213,6 +213,7 @@ const BANK_NAMES: Record<string, string> = {
   '808': 'Bank Spółdzielczy w Hajnówce',
   '809': 'Bank Spółdzielczy w Sokółce',
   '811': 'Bank Spółdzielczy w Kalwarii Zebrzydowskiej',
+  '812': 'Bank Spółdzielczy w Porąbce',
   '813': 'ABS Bank Spółdzielczy',
   '815': 'Bank Spółdzielczy w Piotrkowie Kujawskim',
   '817': 'Bank Spółdzielczy w Nakle n/Notecią',
