@@ -1,7 +1,5 @@
 import { ValidatorFn } from '@angular/forms';
 import {
-  BankName,
-  getFullBankNameFromIban,
   isCreditCardNumberValid,
   isDoctorNumberValid,
   isIbanValid,
@@ -11,10 +9,8 @@ import {
   isNipValid,
   isPeselValid,
   isPostalCodeValid,
-  isRegonValid,
+  isRegonValid
 } from 'polish-validators';
-
-const IBAN_BANK_DATA_REGEX = /^(?:[A-Z]{2})?\d{2}(\d{3})/i;
 
 export class PolishValidators {
   static creditCard: ValidatorFn = control =>
@@ -24,7 +20,6 @@ export class PolishValidators {
     !control.value || isDoctorNumberValid(control.value) ? {} : { doctorNumber: true };
 
   static iban(options: {
-    allowedBankNames?: BankName[];
     allowedCountryCodes?: string[];
     requireCountryCode?: boolean;
   }): ValidatorFn {
@@ -44,13 +39,6 @@ export class PolishValidators {
         }
       }
 
-      if (options.allowedBankNames) {
-        const bankName = getFullBankNameFromIban(v);
-        const [, bankNameCode] = v.match(IBAN_BANK_DATA_REGEX);
-        if (bankName && !options.allowedBankNames.includes(bankName as BankName)) {
-          return { ibanBankNameNotAllowed: { bankNameCode, bankName } };
-        }
-      }
       return {};
     };
   }

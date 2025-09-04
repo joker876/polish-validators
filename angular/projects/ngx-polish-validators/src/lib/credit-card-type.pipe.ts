@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { getCreditCardType } from 'polish-validators';
+import { CreditCardType, getCreditCardType } from 'polish-validators';
 
 /**
  * Pipe that determines the type of credit card based on the first digit of the card number
@@ -20,7 +20,7 @@ export class CreditCardTypePipe implements PipeTransform {
    * @param {string} number - The credit card number as a string.
    * @returns {CreditCardType | null} The credit card type, or `null` if the type cannot be determined.
    */
-  transform(number: string): any {
+  transform(number: string): CreditCardType | null {
     return getCreditCardType(number);
   }
 }
