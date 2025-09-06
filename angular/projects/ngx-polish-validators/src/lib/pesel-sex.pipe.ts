@@ -23,7 +23,7 @@ export class PeselSexPipe implements PipeTransform {
    */
   transform(pesel: string, valueIfInvalid: string = 'Nieprawidłowy PESEL'): string {
     try {
-      return extractSexFromPesel(pesel);
+      return extractSexFromPesel(pesel) ?? valueIfInvalid;
     } catch (error) {
       return valueIfInvalid;
     }
