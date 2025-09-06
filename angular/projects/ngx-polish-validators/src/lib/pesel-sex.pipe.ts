@@ -18,6 +18,7 @@ export class PeselSexPipe implements PipeTransform {
    * Transforms the provided PESEL by extracting the sex.
    *
    * @param {string} pesel - The 11-digit PESEL number as a string.
+   * @param {string} valueIfInvalid - The value to use if the PESEL number is invalid.
    * @returns {string} 'male' if the PESEL belongs to a male, 'female' if it belongs to a female.
    */
   transform(pesel: string, valueIfInvalid: string = 'Nieprawidłowy PESEL'): string {
