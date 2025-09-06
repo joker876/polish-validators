@@ -1,6 +1,6 @@
 {
   "name": "polish-validators",
-  "version": "1.3.0",
+  "version": "2.0.0",
   "description": "A set of validator functions that check common polish numbers.",
   "files": [
     "/dist"
