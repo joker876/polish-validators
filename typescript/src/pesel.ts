@@ -76,12 +76,11 @@ export const isPeselInvalid = (pesel: string) => !isPeselValid(pesel);
 /**
  * Extracts the birthdate from a valid PESEL number.
  * @param pesel - The 11-digit PESEL number as a string.
- * @returns The birthdate as a Date object.
- * @throws Error if the PESEL is invalid.
+ * @returns {Date | null} The birthdate as a Date object, or null if PESEL is invalid.
  */
-export function getBirthdateFromPesel(pesel: string): Date {
+export function getBirthdateFromPesel(pesel: string): Date | null {
   if (!isPeselValid(pesel)) {
-    throw new Error('Trying to extract a birthdate from an invalid PESEL number');
+    return null;
   }
 
   const [year, monthIndex, day] = _getDatePartsFromPesel(pesel);
@@ -98,12 +97,11 @@ export type PeselSex = (typeof PeselSex)[keyof typeof PeselSex];
 /**
  * Extracts the sex from a valid PESEL number.
  * @param pesel - The 11-digit PESEL number as a string.
- * @returns 'male' if the PESEL belongs to a male, 'female' if it belongs to a female.
- * @throws Error if the PESEL is invalid.
+ * @returns {PeselSex | null} 'male' if the PESEL belongs to a male, 'female' if it belongs to a female, null if PESEL is invalid.
  */
-export function extractSexFromPesel(pesel: string): PeselSex {
+export function extractSexFromPesel(pesel: string): PeselSex | null {
   if (!isPeselValid(pesel)) {
-    throw new Error('Trying to extract a birthdate from an invalid PESEL number');
+    return null;
   }
 
   const sexDigit = parseInt(pesel.charAt(9), 10);
